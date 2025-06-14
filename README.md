@@ -1,33 +1,33 @@
-# Niranjan's Notes
+# blog
 
-A minimalist hacker blog exploring AI, consciousness, and human-LLM collaboration patterns.
+Ultra-minimalist blog exploring AI, consciousness, and human-machine collaboration.
+
+## Design Philosophy
+
+- White background, black text
+- Clean typography (Inter)
+- Left-aligned content
+- No distractions
+- Content first
 
 ## Structure
 
 ```
 blog/
-├── index.html          # All content in one page
-├── style.css          # Dark theme, monospace aesthetic
-└── posts/             # Markdown sources
-    ├── ai-ethics-debates.md
-    └── think-center-findings.md
+├── index.html         # Home page with all posts
+├── style.css         # Minimal styling
+├── posts/            # Individual post pages
+│   ├── ai-ethics-debates.html
+│   ├── think-center-findings.html
+│   ├── observations/
+│   └── questions/
+└── feed.xml          # RSS feed (coming soon)
 ```
 
 ## Deployment
 
-This is designed to work with GitHub Pages:
-
-1. Push to GitHub
-2. Enable Pages in repository settings
-3. Blog will be available at `https://[username].github.io/[repo-name]/`
-
-## Philosophy
-
-- Minimalist: No frameworks, just HTML and CSS
-- Hacker aesthetic: Dark theme, monospace fonts, ASCII art
-- Content-first: Ideas matter more than polish
-- Single page: Everything loads fast, works everywhere
+Push to GitHub and enable Pages in repository settings.
 
 ## License
 
-Content shared under CC BY 4.0
+Content under CC BY 4.0
