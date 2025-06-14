@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Think Center for Managing API Contracts - Niranjan Paranjape</title>
+    <meta name="description" content="Using Claude Desktop + Claude Code with think-center perspectives to design, implement, and maintain API contracts. A practical workflow.">
+    <meta property="og:title" content="Think Center for Managing API Contracts">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="./">Niranjan Paranjape</a></h1>
+            <nav>
+                <a href="./">home</a>
+                <a href="./#about">about</a>
+            </nav>
+        </header>
+
+        <main>
+            <article>
+                <h1>Think Center for Managing API Contracts</h1>
+                <div class="post-meta">June 14, 2025</div>
+
+                <p>Here's a concrete workflow showing how think-center perspectives enhance API development when using Claude Desktop + Claude Code. This isn't theoretical - it's how I actually build APIs.</p>
+
+                <h2>The Setup</h2>
+
+                <p><strong>Tools:</strong></p>
+                <ul>
+                    <li>Claude Desktop with think-center boot.md loaded</li>
+                    <li>Claude Code for implementation</li>
+                    <li>Git for version control</li>
+                    <li>OpenAPI/Swagger for contracts</li>
+                </ul>
+
+                <p><strong>The Challenge:</strong> Design and implement a payment processing API that multiple teams will consume.</p>
+
+                <h2>Phase 1: Contract Design (Claude Desktop)</h2>
+
+                <h3>Start with Weaver for Pattern Recognition</h3>
+                <pre><code>You: "Weaver, we're building a payment API. What patterns should we consider for the contract?"
+
+Weaver: "Key patterns to consider:
+- Idempotency for payment operations
+- Event sourcing for audit trails  
+- State machines for payment lifecycle
+- Webhook callbacks for async operations
+- Version negotiation strategies"</code></pre>
+
+                <h3>Switch to O/G for User Psychology</h3>
+                <pre><code>You: "O/G, what anxieties will developers have when integrating our payment API?"
+
+O/G: "Developer anxieties center on:
+- Fear of double-charging customers
+- Uncertainty about failure scenarios
+- Confusion about payment states
+- Worry about PCI compliance
+- Stress about debugging production issues"</code></pre>
+
+                <h3>Bring in E/E for Trade-offs</h3>
+                <pre><code>You: "E/E, how do we balance comprehensive error codes with API simplicity?"
+
+E/E: "Two strategies:
+Explore: Rich error taxonomy with subcodes
+- Pro: Precise error handling
+- Con: Steep learning curve
+
+Exploit: Simple categories with detail in message
+- Pro: Easy to start
+- Con: Harder to program against
+
+Recommendation: Simple categories with optional detail object"</code></pre>
+
+                <h2>Phase 2: Contract Creation (Still Claude Desktop)</h2>
+
+                <h3>Maker Drafts the OpenAPI Spec</h3>
+                <pre><code>You: "Maker, create an OpenAPI spec incorporating these insights"
+
+Maker: "Here's the payment endpoint:
+
+```yaml
+/payments:
+  post:
+    summary: Create a payment
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [amount, currency, idempotency_key]
+            properties:
+              amount:
+                type: integer
+                description: Amount in cents
+              currency:
+                type: string
+                pattern: '^[A-Z]{3}$'
+              idempotency_key:
+                type: string
+                format: uuid
+```"</code></pre>
+
+                <h3>Checker Reviews for Completeness</h3>
+                <pre><code>You: "Checker, review this contract for blind spots"
+
+Checker: "Issues found:
+- No rate limiting headers defined
+- Missing webhook signature verification
+- No explicit timeout expectations
+- Unclear refund partial amount handling
+- No pagination for list endpoints"</code></pre>
+
+                <h2>Phase 3: Implementation (Claude Code)</h2>
+
+                <p>Now switch to Claude Code with the contract ready:</p>
+
+                <h3>Maker Implements with Context</h3>
+                <pre><code># In Claude Code
+You: "Implement the payment creation endpoint based on our OpenAPI spec. 
+Remember: idempotency is critical, we need event sourcing, and clear error messages."
+
+Claude Code generates:
+```python
+@app.post("/payments")
+async def create_payment(
+    payment: PaymentRequest,
+    idempotency_key: str = Header(...),
+    db: Database = Depends(get_db)
+):
+    # Check idempotency
+    existing = await db.get_payment_by_idempotency_key(idempotency_key)
+    if existing:
+        return existing
+    
+    # Create payment with state machine
+    payment_id = str(uuid.uuid4())
+    await db.create_payment_event(
+        payment_id=payment_id,
+        event_type="payment.created",
+        data=payment.dict()
+    )
+    
+    # Process payment...
+```</code></pre>
+
+                <h2>Phase 4: Testing Strategy (Back to Claude Desktop)</h2>
+
+                <h3>Deep Thought for Edge Cases</h3>
+                <pre><code>You: "Deep Thought, what edge cases might we miss in payment processing?"
+
+Deep Thought: "Consider temporal edge cases:
+- Payment initiated at day boundary (timezone issues)
+- Currency conversion during rate changes
+- Idempotency key expiration scenarios
+- Concurrent requests with same idempotency key
+- State transitions during system updates"</code></pre>
+
+                <h2>Phase 5: Documentation (Claude Desktop)</h2>
+
+                <h3>Weaver Creates the Narrative</h3>
+                <pre><code>You: "Weaver, write developer docs that address O/G's identified anxieties"
+
+Weaver: "# Payment API Quick Start
+
+Don't worry about double-charging. Every request requires an 
+idempotency key - use the same key, get the same result.
+
+## Your First Payment
+Start simple. You only need three fields..."</code></pre>
+
+                <h2>The Workflow Rhythm</h2>
+
+                <ol>
+                    <li><strong>Design Phase</strong> (Claude Desktop + think-center)
+                        <ul>
+                            <li>Weaver: Patterns and architecture</li>
+                            <li>O/G: User needs and concerns</li>
+                            <li>E/E: Trade-off analysis</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Specification Phase</strong> (Claude Desktop)
+                        <ul>
+                            <li>Maker: Draft contracts</li>
+                            <li>Checker: Find gaps</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Implementation Phase</strong> (Claude Code)
+                        <ul>
+                            <li>Focused coding with context from design</li>
+                            <li>Quick iterations with immediate feedback</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Verification Phase</strong> (Claude Desktop)
+                        <ul>
+                            <li>Deep Thought: Edge case analysis</li>
+                            <li>Checker: Contract compliance</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Documentation Phase</strong> (Claude Desktop)
+                        <ul>
+                            <li>Weaver: Narrative structure</li>
+                            <li>Maker: Code examples</li>
+                            <li>O/G: Addressing developer emotions</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h2>Pro Tips</h2>
+
+                <ul>
+                    <li><strong>Keep contracts in Git</strong> - Version them alongside code</li>
+                    <li><strong>Use perspectives for reviews</strong> - "Checker, review this PR for API contract violations"</li>
+                    <li><strong>Context handoff</strong> - Copy key decisions from Claude Desktop to Claude Code</li>
+                    <li><strong>Iterative refinement</strong> - Implementation reveals contract issues, feed back to design</li>
+                </ul>
+                <p>The key is using each tool for what it's best at: Claude Desktop + think-center for thinking, Claude Code for building, and disciplined handoffs between them.</p>
+            </article>
+        </main>
+
+        <footer>
+            <p>© 2025 Niranjan Paranjape. Content under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+        </footer>
+    </div>
+</body>
+</html>

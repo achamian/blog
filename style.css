@@ -6,9 +6,12 @@
     --bg: #ffffff;
     --text: #000000;
     --text-secondary: #666666;
+    --text-muted: #999999;
     --link: #0000ee;
     --link-visited: #551a8b;
     --border: #eeeeee;
+    --tag-bg: #f0f0f0;
+    --tag-text: #555555;
     --max-width: 650px;
 }
 
@@ -111,10 +114,11 @@ header nav a:hover {
 }
 
 .section-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 500;
     margin: 3rem 0 1.5rem;
     color: var(--text-secondary);
+    text-transform: lowercase;
 }
 
 /* Post List - Ultra Clean */
@@ -125,7 +129,7 @@ header nav a:hover {
 }
 
 .post-list li {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .post-list h2 {
@@ -135,9 +139,23 @@ header nav a:hover {
 }
 
 .post-list .meta {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Tags with better visibility */
+.post-list .meta .tag {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    margin-left: 0.25rem;
+    font-size: 0.75rem;
+}
+
+.post-list .meta .emoji {
+    margin-right: 0.25rem;
 }
 
 .post-list .summary {
